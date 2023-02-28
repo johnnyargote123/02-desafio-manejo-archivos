@@ -27,10 +27,15 @@ const env = async() => {
     
       let idFilter = 2
     let filterProduct = await manager.getProductById(idFilter)
-
+      if(filterProduct){
       console.log("------------------------------------->")
       console.log(`Producto ${idFilter} encontrado------>`)
       console.log(filterProduct)
+      }
+      else{
+        console.log("------------------------------------->")
+      }
+
 
 
 let idUpdate = 3
@@ -40,15 +45,26 @@ let reuslt2 = await manager.UpdateProducId(idUpdate,"Este tambien lo actualice",
 "https://http2.mlstatic.com/D_NQ_NP_697288-MCO47769752960_102021-O.webp",
 2,
 40)
+
+if(reuslt2){
       console.log("-------------------------------------------------->")
       console.log(`Consulta con producto ${idUpdate} actualizado----->`)
       console.log(reuslt2)
-
+}
+else{
+  console.log("------------------------------------->")
+}
       let idDelete = 8
     let resultDelete = await manager.deleteProductId(idDelete)
+
+    if(resultDelete){
     console.log("------------------------------------------------->")
     console.log(`Consulta con producto ${idDelete} borrado-------->`)
     console.log(resultDelete)
+    }
+    else{
+      console.log("------------------------------------->")
+    }
 }
 
 

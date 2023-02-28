@@ -9,7 +9,7 @@ export default class ProductManager  {
     }
 
     getProduct = async() => {
-        if(fs.existsSync(this.path)){
+        if(fs.existsSync(this.path || !this.products)){
             const data = await fs.promises.readFile(this.path, "utf-8")
             const result = JSON.parse(data)
             return result
@@ -52,10 +52,20 @@ export default class ProductManager  {
         if(fs.existsSync(this.path)){
             const data = await fs.promises.readFile(this.path, "utf-8")
             const result = JSON.parse(data)
-            const filterResult = result.filter((v) => v.id === codeId)
-            return  filterResult
+            const findCode = result.find((v) => v.id === codeId);
+
+            if(!findCode){
+
+              return  console.error(`Producto ${codeId} no encontrado`)
+            }        
+            else{
+              const filterResult = result.filter((v) => v.id === codeId)
+              return filterResult
+            }
+
            
         }
+
       }
 
       UpdateProducId = async(codeId,title, description, price, thumbnail, code, stock) => {
@@ -63,7 +73,12 @@ export default class ProductManager  {
         const result = JSON.parse(data)
         const index = result.findIndex((v) => v.id === codeId)
 
-        // valores que se desean cambiar
+        if(index === -1){
+          console.error(`No se encontro el producto ${codeId}  a actualizar`)
+          return 
+        }
+        else{
+                 // valores que se desean cambiar
         result[index].title = title
         result[index].description = description
         result[index].price = price
@@ -83,16 +98,17 @@ export default class ProductManager  {
             stock: result[index].stock
         };
 
-
-        // validacion de existencia del producto a actualizar 
-          if (index !== -1) {
-            result[index] = updatedProduct;
-          } else {
-            throw new Error(`El producto con id ${codeId} no se encontro`);
-          }
-        
-        await fs.promises.writeFile(this.path, JSON.stringify(result, null, "\t"))
-        return result
+               // validacion de existencia del producto a actualizar 
+               if (index !== -1) {
+                result[index] = updatedProduct;
+              } else {
+                throw new Error(`El producto con id ${codeId} no se encontro`);
+              }
+            
+            await fs.promises.writeFile(this.path, JSON.stringify(result, null, "\t"))
+            return result
+ 
+        }
 
       }
 
@@ -102,12 +118,16 @@ export default class ProductManager  {
         const ProducToDelete = result.find((v) => v.id === codeId)
 
 
-        if (ProducToDelete) {
-            result.splice(result.indexOf(ProducToDelete), 1);
+        if (!ProducToDelete) {
+            console.log(`El producto ${codeId} no existe asi que no se puede borrar`)
+          }
+          else{
+            result.splice(result.indexOf(ProducToDelete), 1)
+            await fs.promises.writeFile(this.path, JSON.stringify(result, null, "\t"))
+            return result
           }
 
-          await fs.promises.writeFile(this.path, JSON.stringify(result, null, "\t"))
-          return result
+
     }
 
 }
