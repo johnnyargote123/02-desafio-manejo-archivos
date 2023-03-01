@@ -18,7 +18,7 @@ const env = async() => {
         "Este teclado Omega es el mejor complemento para hacer todo tipo de actividades. Es cómodo y práctico al momento de redactar documentos, navegar y hacer búsquedas por internet, ya sea en tu trabajo o en la comodidad del hogar.",
         25900,
         "https://http2.mlstatic.com/D_NQ_NP_697288-MCO47769752960_102021-O.webp",
-        2,
+        10,
         40
       )
       console.log("------------------------------------->")
@@ -43,7 +43,7 @@ let reuslt2 = await manager.UpdateProducId(idUpdate,"Este tambien lo actualice",
 "Este teclado Omega es el mejor complemento para hacer todo tipo de actividades. Es cómodo y práctico al momento de redactar documentos, navegar y hacer búsquedas por internet, ya sea en tu trabajo o en la comodidad del hogar.",
 25900,
 "https://http2.mlstatic.com/D_NQ_NP_697288-MCO47769752960_102021-O.webp",
-2,
+9,
 40)
 
 if(reuslt2){
@@ -65,6 +65,9 @@ else{
     else{
       console.log("------------------------------------->")
     }
+    console.log("------------------------------------->")
+    console.log("consulta final----------------------->")
+    console.log(consulta)
 }
 
 

@@ -33,7 +33,48 @@ export default class ProductManager  {
             stock: stock,
           };
 
-          if(productos.length === 0){
+          const findCode = productos.find((v) => v.code === code);
+          if (!findCode) {
+            this.#productValueUndefined(
+              product.title,
+              product.description,
+              product.price,
+              product.thumbnail,
+              product.code,
+              product.stock,
+              product
+            );
+            return product
+
+        }
+        if (findCode) {
+          console.log("------------------------------------->")
+          console.log("No se puede repetir el codigo:", code );
+        }
+
+      }
+
+
+      #productValueUndefined = async(
+        title,
+        description,
+        price,
+        thumbnail,
+        code,
+        stock,
+        product
+      ) => {
+        if (
+          title != undefined &&
+          description != undefined &&
+          price != undefined &&
+          thumbnail != undefined  &&
+          code != undefined &&
+          stock != undefined 
+        ) {
+          const productos = await this.getProduct()
+
+        if(productos.length === 0){
             product.id = 1
         }
 
@@ -44,9 +85,22 @@ export default class ProductManager  {
         productos.push(product)
 
         await fs.promises.writeFile(this.path, JSON.stringify(productos, null, "\t"))
-        return product
-
-      }
+          
+        } else {
+          Object.prototype.getKey = function (value) {
+            for (let key in this) {
+              if (this[key] == value) {
+                return key;
+              }
+            }
+          };
+          console.log("------------------------------------------>");
+          console.log("ERROR: Deben llenarse todos los campos del producto");
+          console.log(
+            `El valor faltante es: ${product.getKey(undefined)?.toUpperCase()}`
+          );
+        }
+      };
 
       getProductById = async(codeId) => {
         if(fs.existsSync(this.path)){
@@ -106,7 +160,7 @@ export default class ProductManager  {
               }
             
             await fs.promises.writeFile(this.path, JSON.stringify(result, null, "\t"))
-            return result
+            return updatedProduct
  
         }
 
@@ -124,10 +178,8 @@ export default class ProductManager  {
           else{
             result.splice(result.indexOf(ProducToDelete), 1)
             await fs.promises.writeFile(this.path, JSON.stringify(result, null, "\t"))
-            return result
+            return ProducToDelete
           }
-
-
     }
 
 }
